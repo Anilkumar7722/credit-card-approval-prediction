@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Prediction Result &mdash; CreditIQ{% endblock %}
+
+{% block content %}
+<section class="result-hero">
+  <div class="container-ci">
+    <div class="result-badge {{ 'approved' if result.approved else 'rejected' }}">
+      <i class="fa-solid {{ 'fa-circle-check' if result.approved else 'fa-circle-xmark' }}"></i>
+      {{ result.decision }}
+    </div>
+    <h2 style="margin-bottom: 8px;">{{ 'This application is likely to be approved' if result.approved else 'This application is likely to be rejected' }}</h2>
+    <p style="color: var(--text-secondary); max-width: 520px; margin: 0 auto;">Based on the applicant profile submitted, here is the full risk breakdown from the trained model.</p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container-ci">
+    <div class="result-grid reveal">
+
+      <div class="result-card glass">
+        <h3>Approval Probability</h3>
+        <div class="gauge-wrap">
+          <canvas id="gaugeChart" width="220" height="220"></canvas>
+          <div class="gauge-value">
+            <div class="num ci-mono">{{ result.approval_probability }}%</div>
+            <div class="lbl">Approve chance</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; gap: 24px; margin-top: 8px;">
+          <div style="text-align:center;">
+            <div class="ci-mono" style="font-size:1.1rem; color: var(--teal);">{{ result.approval_probability }}%</div>
+            <div style="font-size:0.76rem; color: var(--text-muted);">Approve</div>
+          </div>
+          <div style="text-align:center;">
+            <div class="ci-mono" style="font-size:1.1rem; color: var(--coral);">{{ result.rejection_probability }}%</div>
+            <div style="font-size:0.76rem; color: var(--text-muted);">Reject</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-card glass">
+        <h3>Risk Meter</h3>
+        <div style="margin-top: 30px;">
+          <div class="risk-meter-track">
+            <div class="risk-meter-pointer" id="riskPointer" style="left: 0%;"></div>
+          </div>
+          <div class="risk-labels"><span>Low risk</span><span>Medium</span><span>High risk</span></div>
+        </div>
+        <div class="detail-list" style="margin-top: 26px;">
+          <div class="detail-row"><span class="k">Risk score</span><span class="v">{{ result.risk_score }} / 100</span></div>
+          <div class="detail-row"><span class="k">Risk level</span><span class="v">{{ result.risk_level }}</span></div>
+          <div class="detail-row"><span class="k">Model confidence</span><span class="v">{{ result.confidence }}%</span></div>
+        </div>
+      </div>
+
+      <div class="result-card glass" style="grid-column: 1 / -1;">
+        <h3>Recommendation</h3>
+        <div class="recommendation-box">
+          <i class="fa-solid fa-circle-info" style="color: var(--gold); margin-right: 8px;"></i>
+          {{ result.recommendation }}
+        </div>
+
+        <div style="margin-top: 26px; display:flex; gap: 14px; flex-wrap: wrap;">
+          <button class="btn-ci btn-ci-ghost" id="downloadReportBtn"><i class="fa-solid fa-file-arrow-down"></i> Download Report</button>
+          <a href="{{ url_for('predict_page') }}" class="btn-ci btn-ci-ghost"><i class="fa-solid fa-arrow-rotate-left"></i> Run Another Prediction</a>
+          <a href="{{ url_for('dashboard') }}" class="btn-ci btn-ci-primary"><i class="fa-solid fa-chart-line"></i> View Model Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  const approve = {{ result.approval_probability }};
+  const reject = {{ result.rejection_probability }};
+  const risk = {{ result.risk_score }};
+
+  const ctx = document.getElementById("gaugeChart");
+  new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Approve", "Reject"],
+      datasets: [{
+        data: [approve, reject],
+        backgroundColor: ["#2FD4B8", "#F26D6D"],
+        borderWidth: 0,
+        cutout: "78%",
+      }],
+    },
+    options: {
+      responsive: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: true } },
+      animation: { animateRotate: true, duration: 1200, easing: "easeOutCubic" },
+    },
+  });
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      document.getElementById("riskPointer").style.left = Math.min(Math.max(risk, 2), 98) + "%";
+    }, 200);
+  });
+
+  document.getElementById("downloadReportBtn").addEventListener("click", function () {
+    const lines = [
+      "CREDITIQ — CREDIT APPROVAL REPORT",
+      "===================================",
+      "Generated: " + new Date().toISOString(),
+      "",
+      "Decision: {{ result.decision }}",
+      "Approval Probability: {{ result.approval_probability }}%",
+      "Rejection Probability: {{ result.rejection_probability }}%",
+      "Model Confidence: {{ result.confidence }}%",
+      "Risk Score: {{ result.risk_score }} / 100",
+      "Risk Level: {{ result.risk_level }}",
+      "",
+      "Recommendation:",
+      "{{ result.recommendation }}",
+      "",
+      "-- This report is generated by an educational/portfolio ML model and is not a real lending decision. --",
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "creditiq_report.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+{% endblock %}

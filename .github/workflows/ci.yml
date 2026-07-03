@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate synthetic dataset
+        run: python dataset/generate_dataset.py
+
+      - name: Train model
+        run: python train.py
+
+      - name: Smoke-test the Flask app
+        run: |
+          python -c "
+          from app import app
+          client = app.test_client()
+          for route in ['/', '/predict', '/dashboard', '/about', '/health']:
+              resp = client.get(route)
+              assert resp.status_code == 200, f'{route} returned {resp.status_code}'
+              print(route, 'OK')
+          "
+
+      - name: Lint (flake8, non-blocking)
+        run: |
+          pip install flake8
+          flake8 . --max-line-length=120 --extend-ignore=E203,W503 --exclude=notebook || true

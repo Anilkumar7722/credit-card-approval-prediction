@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}About &mdash; CreditIQ{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+  <div class="container-ci">
+    <div class="section-head reveal" style="text-align: left; max-width: 700px; margin: 0 0 40px;">
+      <span class="section-eyebrow">About the project</span>
+      <h2>An end-to-end credit risk ML system</h2>
+      <p>CreditIQ was built as a reference implementation of a production-shaped machine learning application: data generation, cleaning, feature engineering, model comparison, and a deployable web layer &mdash; all in one repository.</p>
+    </div>
+
+    <div class="glass reveal" style="padding: 34px; margin-bottom: 26px;">
+      <h3 style="font-size: 1.05rem; margin-bottom: 20px;">Request lifecycle</h3>
+      <div class="arch-step">
+        <div class="arch-icon"><i class="fa-solid fa-keyboard"></i></div>
+        <div><h4>1. Applicant data submitted</h4><p>Via the web form (<code>POST /predict</code>) or the JSON API (<code>POST /api/predict</code>).</p></div>
+      </div>
+      <div class="arch-step">
+        <div class="arch-icon"><i class="fa-solid fa-broom"></i></div>
+        <div><h4>2. Validation &amp; cleaning</h4><p>Required fields, numeric ranges, and type coercion are checked server-side before anything touches the model.</p></div>
+      </div>
+      <div class="arch-step">
+        <div class="arch-icon"><i class="fa-solid fa-diagram-project"></i></div>
+        <div><h4>3. Feature engineering</h4><p>Debt-to-income, loan-to-income, savings ratio, credit utilization risk, and employment stability are computed from the raw fields.</p></div>
+      </div>
+      <div class="arch-step">
+        <div class="arch-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div><h4>4. Encoding &amp; scaling</h4><p>Categorical fields pass through the label encoders fit during training; all numeric features are standardized with the saved <code>StandardScaler</code>.</p></div>
+      </div>
+      <div class="arch-step">
+        <div class="arch-icon"><i class="fa-solid fa-robot"></i></div>
+        <div><h4>5. Inference</h4><p>The saved best model (selected by test-set ROC&ndash;AUC) scores the vector and returns a class + probability.</p></div>
+      </div>
+      <div class="arch-step">
+        <div class="arch-icon"><i class="fa-solid fa-message"></i></div>
+        <div><h4>6. Explained response</h4><p>Probability, confidence, a risk band, and a plain-language recommendation are assembled and returned.</p></div>
+      </div>
+    </div>
+
+    <div class="glass reveal" style="padding: 34px; margin-bottom: 26px;">
+      <h3 style="font-size: 1.05rem; margin-bottom: 16px;">Tech stack</h3>
+      <div>
+        <span class="tech-pill"><i class="fa-brands fa-python"></i> Python 3.11</span>
+        <span class="tech-pill">scikit-learn</span>
+        <span class="tech-pill">pandas / NumPy</span>
+        <span class="tech-pill">XGBoost</span>
+        <span class="tech-pill">LightGBM</span>
+        <span class="tech-pill">CatBoost</span>
+        <span class="tech-pill">imbalanced-learn (SMOTE)</span>
+        <span class="tech-pill"><i class="fa-solid fa-flask"></i> Flask</span>
+        <span class="tech-pill">Chart.js</span>
+        <span class="tech-pill"><i class="fa-brands fa-bootstrap"></i> Bootstrap 5</span>
+        <span class="tech-pill"><i class="fa-brands fa-docker"></i> Docker</span>
+        <span class="tech-pill">Render</span>
+        <span class="tech-pill">Joblib</span>
+      </div>
+    </div>
+
+    <div class="glass reveal" style="padding: 34px;">
+      <h3 style="font-size: 1.05rem; margin-bottom: 16px;">Honest limitations</h3>
+      <ul style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.9; padding-left: 20px;">
+        <li>The dataset is <strong>synthetic</strong>, generated to mirror the schema and relationships of real-world credit approval datasets (income, credit score, DTI, employment stability, default history) &mdash; it is not real applicant data.</li>
+        <li>This is a decision-support demo, not a compliant lending system. Real credit decisioning requires fair-lending review, regulatory compliance (e.g. ECOA, FCRA in the US), and human oversight.</li>
+        <li>Authentication, a persistent database, PDF export, and a conversational assistant were intentionally left out of this pass to keep the core ML pipeline and UI solid &mdash; see the README's "Future Improvements" section.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

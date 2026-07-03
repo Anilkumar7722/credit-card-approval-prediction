@@ -1,0 +1,36 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Large generated dataset (regenerate with dataset/generate_dataset.py)
+# Comment this out if you want to commit the dataset to the repo.
+# dataset/credit_card_approval.csv
+
+# Trained model artifacts (regenerate with train.py)
+# Comment this out if you want to ship a pre-trained model in the repo.
+# model/*.pkl
+# model/metrics.json

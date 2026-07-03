@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found &mdash; CreditIQ{% endblock %}
+{% block content %}
+<section class="error-page">
+  <div class="container-ci">
+    <div class="code">404</div>
+    <h2 style="margin: 16px 0;">This page doesn't exist.</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 30px;">The page you're looking for may have moved or was never here.</p>
+    <a href="{{ url_for('home') }}" class="btn-ci btn-ci-primary"><i class="fa-solid fa-house"></i> Back to Home</a>
+  </div>
+</section>
+{% endblock %}

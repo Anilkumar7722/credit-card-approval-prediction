@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: creditiq-app
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: >
+      pip install -r requirements.txt &&
+      python dataset/generate_dataset.py &&
+      python train.py
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 app:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: FLASK_DEBUG
+        value: "false"
