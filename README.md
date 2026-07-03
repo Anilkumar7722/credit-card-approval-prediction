@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner/banner.png" alt="CreditIQ Banner" width="100%">
+</p>
+
 # CreditIQ — Credit Card Approval Prediction
 
 <p align="center">
@@ -223,3 +227,48 @@ MIT — see [LICENSE](LICENSE).
 Built by **Anilkumar** as a portfolio / learning project. Not affiliated with any real
 credit bureau or lender — see the [About](templates/about.html) page in-app for full
 limitations.
+
+# 👨‍💻 Project Team
+
+| Name | Role |
+|------|------|
+| **Gorantla Anilkumar** | Team Lead • Machine Learning • GitHub Management • Deployment |
+| **Karapakula Nandiswar** | Team Member |
+| **Varun Kumar Reddy Chintha** | Team Member |
+| **Sumanth Boddu** | Team Member |
+| **Dhanush Tirumanyam** | Team Member |
+
+
+# 🏫 Academic Information
+
+**College**
+
+Sri Venkateswara College of Engineering
+
+**Department**
+
+Computer Science & Engineering (AI & ML)
+
+**Year**
+
+IV Year
+
+---
+
+# 🎓 Internship Details
+
+**Organization**
+
+SmartBridge
+
+**Internship**
+
+Artificial Intelligence & Machine Learning Internship
+
+**Project**
+
+Credit Card Approval Prediction System
+
+---
+
+## ⭐ If you like this project, don't forget to star the repository!
