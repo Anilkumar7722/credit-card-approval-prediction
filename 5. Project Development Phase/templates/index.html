@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block title %}CreditIQ &mdash; AI Credit Approval Engine{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="container-ci">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-eyebrow"><span class="dot"></span> Live ML inference &middot; {{ stats.best_model }}</span>
+        <h1>Credit Card <span class="accent">APPROVAL</span></h1>
+        <p class="hero-sub">CreditIQ runs applicant data through a trained ensemble of machine learning models &mdash; scored, explained, and returned as an approval decision with a full risk breakdown.</p>
+        <div class="hero-actions">
+          <a href="{{ url_for('predict_page') }}" class="btn-ci btn-ci-primary"><i class="fa-solid fa-bolt"></i> Run a Prediction</a>
+          <a href="{{ url_for('dashboard') }}" class="btn-ci btn-ci-ghost"><i class="fa-solid fa-chart-line"></i> View Model Dashboard</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num"><span data-count="{{ '%.1f'|format(stats.accuracy) }}" data-decimals="1">0</span>%</div>
+            <div class="label">Test accuracy</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num"><span data-count="{{ '%.1f'|format(stats.roc_auc) }}" data-decimals="1">0</span>%</div>
+            <div class="label">ROC&ndash;AUC score</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num"><span data-count="{{ stats.dataset_rows }}" data-decimals="0">0</span></div>
+            <div class="label">Training records</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-stage">
+        <div class="credit-card">
+          <div class="cc-top">
+            <div class="cc-chip"></div>
+            <div class="cc-logo">Credit<span class="ci-brand-accent">IQ</span></div>
+          </div>
+          <div class="cc-number">4291&nbsp;&bull;&bull;&bull;&bull;&nbsp;&bull;&bull;&bull;&bull;&nbsp;7722</div>
+          <div class="cc-bottom">
+            <div class="cc-holder"><div class="label">Applicant</div><div class="value">ANIL KUMAR GORANTLA</div></div>
+            <div class="cc-expiry"><div class="label">Score</div><div class="value">742</div></div>
+          </div>
+          <div class="cc-stamp">APPROVED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container-ci">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">Capabilities</span>
+      <h2>Everything a credit risk pipeline needs</h2>
+      <p>From raw applicant data to an explainable decision &mdash; the full pipeline, in one request.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card glass reveal">
+        <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+        <h3>Ensemble ML Scoring</h3>
+        <p>Twelve candidate models &mdash; from logistic regression to gradient boosting &mdash; compared and tuned automatically to select the strongest performer.</p>
+      </div>
+      <div class="feature-card glass reveal">
+        <div class="feature-icon"><i class="fa-solid fa-gauge-high"></i></div>
+        <h3>Real-Time Risk Meter</h3>
+        <p>Every prediction returns an approval probability, a confidence score, and a calibrated risk band &mdash; not just a binary label.</p>
+      </div>
+      <div class="feature-card glass reveal">
+        <div class="feature-icon"><i class="fa-solid fa-file-csv"></i></div>
+        <h3>Batch CSV Scoring</h3>
+        <p>Upload a portfolio of applications and get every decision back as a downloadable, scored CSV in one pass.</p>
+      </div>
+      <div class="feature-card glass reveal">
+        <div class="feature-icon"><i class="fa-solid fa-chart-pie"></i></div>
+        <h3>Live Model Dashboard</h3>
+        <p>Leaderboard of every model trained, feature importance, confusion matrix, and ROC curve &mdash; all in one view.</p>
+      </div>
+      <div class="feature-card glass reveal">
+        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Validated Inputs</h3>
+        <p>Server-side and client-side validation catch malformed or out-of-range applicant data before it ever reaches the model.</p>
+      </div>
+      <div class="feature-card glass reveal">
+        <div class="feature-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+        <h3>Deploy Anywhere</h3>
+        <p>Ships with a Dockerfile, Render blueprint, and Procfile &mdash; running locally or in production takes one command.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-ci">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">Pipeline</span>
+      <h2>How a prediction gets made</h2>
+      <p>Four stages, all inside a single request/response cycle.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step glass reveal">
+        <div class="flow-num">01</div>
+        <h4>Submit applicant data</h4>
+        <p>Seventeen fields covering income, credit history, employment, and existing debt.</p>
+      </div>
+      <div class="flow-step glass reveal">
+        <div class="flow-num">02</div>
+        <h4>Clean &amp; engineer features</h4>
+        <p>Debt-to-income, loan-to-income, savings ratio, and five other derived signals are computed.</p>
+      </div>
+      <div class="flow-step glass reveal">
+        <div class="flow-num">03</div>
+        <h4>Score with the trained model</h4>
+        <p>The saved best-performing model scores the standardized feature vector.</p>
+      </div>
+      <div class="flow-step glass reveal">
+        <div class="flow-num">04</div>
+        <h4>Return an explained decision</h4>
+        <p>Approval probability, risk level, and a plain-language recommendation are returned instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container-ci">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">Benchmarks</span>
+      <h2>Model performance, measured honestly</h2>
+      <p>Metrics from the held-out test split &mdash; not training accuracy.</p>
+    </div>
+    <div class="perf-strip">
+      <div class="perf-card glass reveal">
+        <div class="perf-value">{{ '%.1f'|format(stats.accuracy) }}<span class="unit">%</span></div>
+        <div class="perf-label">Accuracy</div>
+        <div class="perf-bar"><div class="perf-bar-fill" data-width="{{ stats.accuracy }}%"></div></div>
+      </div>
+      <div class="perf-card glass reveal">
+        <div class="perf-value">{{ '%.1f'|format(stats.roc_auc) }}<span class="unit">%</span></div>
+        <div class="perf-label">ROC&ndash;AUC</div>
+        <div class="perf-bar"><div class="perf-bar-fill" data-width="{{ stats.roc_auc }}%"></div></div>
+      </div>
+      <div class="perf-card glass reveal">
+        <div class="perf-value">12</div>
+        <div class="perf-label">Models compared</div>
+        <div class="perf-bar"><div class="perf-bar-fill" data-width="100%"></div></div>
+      </div>
+      <div class="perf-card glass reveal">
+        <div class="perf-value">&lt;100<span class="unit">ms</span></div>
+        <div class="perf-label">Typical inference time</div>
+        <div class="perf-bar"><div class="perf-bar-fill" data-width="92%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-ci">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">Feedback</span>
+      <h2>What reviewers say</h2>
+      <p>Illustrative feedback from portfolio reviews &mdash; sample content for demonstration.</p>
+    </div>
+    <div class="testimonial-grid">
+      <div class="testimonial-card glass reveal">
+        <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>"The model comparison workflow is genuinely thorough &mdash; twelve algorithms, cross-validated, with a clear winner. That's rare to see done properly in a portfolio piece."</p>
+        <div class="testimonial-who">
+          <div class="testimonial-avatar">N</div>
+          <div><div class="testimonial-name">K. Nandhiswar</div><div class="testimonial-role">Student at SVCE</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>"Clean separation between training, inference, and the web layer. Easy to see exactly how a prediction gets from a form field to a decision."</p>
+        <div class="testimonial-who">
+          <div class="testimonial-avatar">S</div>
+          <div><div class="testimonial-name">Boddu. Sumanth</div><div class="testimonial-role">Zoho CEO</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+        <p>"The dashboard makes the model's behaviour legible &mdash; feature importance and the confusion matrix are exactly what I'd want to see explained in an interview."</p>
+        <div class="testimonial-who">
+          <div class="testimonial-avatar">V</div>
+          <div><div class="testimonial-name">C. Varun Kumar Reddy</div><div class="testimonial-role">Student at SVCE</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+        <p>"The dashboard makes the model's behaviour legible &mdash; feature importance and the confusion matrix are exactly what I'd want to see explained in an interview."</p>
+        <div class="testimonial-who">
+          <div class="testimonial-avatar">D</div>
+          <div><div class="testimonial-name">T. Danush</div><div class="testimonial-role">Student at SVCE</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container-ci">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">FAQ</span>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq-list glass" style="padding: 8px 28px;">
+      <div class="faq-item">
+        <div class="faq-q"><span>Is this connected to a real credit bureau?</span><i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">No. This is an educational/portfolio project trained on a synthetic dataset that mirrors real-world credit approval schemas. It is not connected to any credit bureau and should not be used for real lending decisions.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Which model is currently deployed?</span><i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">The model with the highest ROC-AUC on the held-out test set is selected automatically by <code>train.py</code> and saved to <code>model/model.pkl</code>. Check the Dashboard page for the current leaderboard.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Can I retrain it on my own data?</span><i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Yes &mdash; drop a CSV matching the documented schema into the <code>dataset/</code> folder and run <code>python train.py</code>. Every artifact (model, scaler, encoders, metrics) is regenerated automatically.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span>Is there an API, or only the web form?</span><i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Both. <code>POST /api/predict</code> accepts JSON and returns the same decision payload the web form uses &mdash; see the README for the full request/response schema.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container-ci">
+    <div class="cta-band glass-strong reveal">
+      <h2>See how your application would score</h2>
+      <p>Takes under a minute &mdash; no account required.</p>
+      <a href="{{ url_for('predict_page') }}" class="btn-ci btn-ci-primary"><i class="fa-solid fa-bolt"></i> Start a Prediction</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
